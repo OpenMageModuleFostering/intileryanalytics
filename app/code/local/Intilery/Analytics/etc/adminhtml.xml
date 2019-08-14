@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- <menu>
+        <intilery module="analytics_admincontroller" translate="title">
+            <title>Intilery Analytics</title>
+            <sort_order>100</sort_order>
+            <children>
+                <index module="analytics_admincontroller" translate="title">
+                    <title>Tracking Code</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/intilery</action>
+                </index>
+                <list module="analytics_admincontroller" translate="title">
+                    <title>List Action</title>
+                    <sort_order>2</sort_order>
+                    <action>adminhtml/intilery/list</action>
+                </list>
+            </children>
+        </intilery>
+    </menu> -->
+    <acl>
+        <resources>
+            <admin>
+                <children>
+					 <system>
+						<children>
+							<config>
+								<children>
+									<intilery translate="title" module="analytics">
+										<title>Tracking Code Section</title>
+										<sort_order>100</sort_order>
+									</intilery>
+								</children>
+							</config>
+						</children>
+					</system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Intilery_Analytics>
+            <version>1.0.0</version>
+        </Intilery_Analytics>
+    </modules>
+	
+    <global>
+	<models>
+            <analytics>
+                <class>Intilery_Analytics_Model</class>
+            </analytics>
+        </models>
+		
+	<helpers>
+	    <analytics>
+                <class>Intilery_Analytics_Helper</class>
+            </analytics>
+           <!--  <analytics_admincontroller>
+                <class>Mage_Core_Helper</class>
+            </analytics_admincontroller> -->
+        </helpers>
+		
+        <events>
+            <!-- <catalog_product_save_after>
+                <observers>
+                    <analytics>
+                        <class>analytics/observer</class>
+                        <method>logUpdate</method>
+                        <type>singleton</type>
+                    </analytics>
+                </observers>
+            </catalog_product_save_after> -->
+			
+	    <checkout_cart_add_product_complete>
+		<observers>
+		    <analytics_cart_add>
+			<class>analytics/observer</class>
+			<method>logCartAdd</method>
+			<type>singleton</type>
+		    </analytics_cart_add>
+		</observers>
+	    </checkout_cart_add_product_complete>
+	    
+	    <sales_quote_item_qty_set_after>
+	    	<observers>
+		    <analytics_cart_update>
+			<class>analytics/observer</class>
+			<method>logCartUpdate</method>
+			<type>singleton</type>
+		    </analytics_cart_update>
+		</observers>
+	    </sales_quote_item_qty_set_after>
+	    
+	    <!--
+	    <checkout_cart_update_item_complete>
+	    	<observers>
+		    <analytics_cart_update>
+			<class>analytics/observer</class>
+			<method>logCartUpdate</method>
+			<type>singleton</type>
+		    </analytics_cart_update>
+		</observers>
+	    </checkout_cart_update_item_complete>
+	    -->
+	    
+	    <sales_quote_remove_item>
+	    	<observers>
+		    <analytics_cart_remove>
+			<class>analytics/observer</class>
+			<method>logCartRemove</method>
+			<type>singleton</type>
+		    </analytics_cart_remove>
+		</observers>
+	    </sales_quote_remove_item>
+	    
+	    <customer_logout>
+	    	<observers>
+	    	    <analytics_logout>
+	    		<class>analytics/observer</class>
+	    		<method>logCustomerLogout</method>
+	    		<type>singleton</type>	
+	    	    </analytics_logout>
+	    	</observers>
+	    </customer_logout>
+	    
+	    <customer_login>
+	    	<observers>
+	    	    <analytics_login>
+	    		<class>analytics/observer</class>
+	    		<method>logCustomerLogin</method>
+	    		<type>singleton</type>	
+	    	    </analytics_login>
+	    	</observers>
+	    </customer_login>
+	    
+	    <customer_register_success>
+	    	<observers>
+	    	    <analytics_register>
+	    		<class>analytics/observer</class>
+	    		<method>logCustomerRegister</method>
+	    		<type>singleton</type>	
+	    	    </analytics_register>
+	    	</observers>
+	    </customer_register_success>
+	    
+	    <catalogsearch_query_load_after>
+	    	<observers>
+	    	    <analytics_search>
+	    		<class>analytics/observer</class>
+	    		<method>logSearch</method>
+	    		<type>singleton</type>	
+	    	    </analytics_search>
+	    	</observers>
+	    </catalogsearch_query_load_after>
+	    
+	    <catalog_controller_product_view>
+	    	<observers>
+	    	    <analytics_product>
+	    		<class>analytics/observer</class>
+	    		<method>logProductView</method>
+	    		<type>singleton</type>	
+	    	    </analytics_product>
+	    	</observers>
+	    </catalog_controller_product_view>
+        </events>
+    </global>
+	
+	<!-- <admin>
+		<routers>
+			<analytics>
+				<use>admin</use>
+				<args>
+					<module>Intilery_Analytics</module>
+					<frontName>intilery</frontName>
+				</args>
+			</analytics>
+		</routers>
+	</admin>
+		
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+			<admin>
+				<children>
+					<analytics translate="title" module="analytics">
+						<title>Analytics</title>
+						<sort_order>1000</sort_order>
+						<children>
+							<index translate="title">
+								<title>Intilery Analytics</title>
+							</index>
+						</children>
+					</analytics>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+		
+	<admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <analytics before="Mage_Adminhtml">Intilery_Analytics_Adminhtml</analytics>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin> -->
+	
+	<frontend>
+        <layout>
+            <updates>
+                <analytics>
+                    <file>intileryanalytics.xml</file>
+                </analytics>
+            </updates>
+        </layout>
+    </frontend>
+	
+	<default>
+		<intilery>
+			<tracking>
+				<code></code>
+				<active>0</active>
+			</tracking>
+		</intilery>
+	</default>
+</config>

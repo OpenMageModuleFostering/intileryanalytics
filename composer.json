@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/IntileryAnalytics",
+    "type": "magento-module",
+    "license": "GNU-General-Public-License-(GPL)",
+    "homepage": "",
+    "description": "Install Intilery analytics on your Magento copy",
+    "authors": [
+    {
+        "name": "Lewis Theobald",
+        "email": "lewis@aljtmedia.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

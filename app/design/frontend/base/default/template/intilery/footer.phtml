@@ -1,0 +1,176 @@
+<?php
+
+# Get our config
+$intileryConfig = Mage::getStoreConfig('intilery/tracking');
+
+# Enabled tracking?
+if($intileryConfig['active']) {
+
+	# Main tracking tag
+	echo '
+<script type="text/javascript">
+_gaq = [] || _gaq;window.INTILERY = {};INTILERY.gaq = [];
+(function($, _push) {_gaqPush = _push;$.push = function() {INTILERY.gaq.push(arguments[0]);return _gaqPush.apply(_gaq,arguments);}})(_gaq, _gaq.push);var _itq = _itq || [];
+_itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
+(function(){
+	var it = document.createElement("script"); it.type = "text/javascript"; it.async = true;
+	it.src = ("https:" == document.location.protocol ? "https://" : "http://") + "www.intilery-analytics.com/rest/it.js";
+	var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(it, s);
+})();
+</script>';
+
+	# Get any triggered events
+	$intileryTagType = Mage::getSingleton('core/session')->getData('intileryTagType', true);
+	
+	# Special cases
+	$intileryTagTypeRegister = Mage::getSingleton('core/session')->getData('intileryCustomerRegister', true);
+	
+	# Found register?
+	if(!is_null($intileryTagTypeRegister) || ($intileryTagType == 'customerRegister')) {
+	
+		# Any "add to cart" data
+		$customerRegisterData =  Mage::getSingleton('core/session')->getData('intileryCustomerData', true);
+			
+		if(!is_null($customerRegisterData) && !empty($customerRegisterData)) {
+		
+			echo "<script>
+			var _itq = _itq || [];
+			_itq.push(['_trackUserEvent','register account',
+		   	[
+		   		{name:'Customer.Email', value:'{$customerRegisterData['email']}'},
+		       		{name:'Customer.First Name', value:'{$customerRegisterData['forename']}'},
+		       		{name:'Customer.Last Name', value:'{$customerRegisterData['surname']}'},
+		       		{name:'Customer.Subscribed', value:'{$customerRegisterData['subscribe']}'}
+		       	]]);
+			</script>";
+		
+		}
+	
+	}
+	
+	# Found some tag type
+	if(!is_null($intileryTagType)) {
+		
+		# Login customer
+		if($intileryTagType == 'CustomerLogin') {
+		
+			# Any "add to cart" data
+			$customerLoginData =  Mage::getSingleton('core/session')->getData('customerLogin', true);
+			
+			# Did we add to cart?
+			if(!is_null($customerLoginData) && !empty($customerLoginData)) {
+			
+				echo "<script>
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'sign in', [{name:'Customer.Email', value:'{$customerLoginData['email']}'}]]);
+				</script>";
+			
+			}
+		
+		# Logout customer
+		} elseif($intileryTagType == 'CustomerLogout') {
+		
+			echo "<script>
+			var _itq = _itq || [];
+			_itq.push(['_trackUserEvent', 'sign out', []]);
+			</script>";
+		
+		# When we added to cart
+		} elseif($intileryTagType == 'AddCart') {
+
+			# Any "add to cart" data
+			$productAddedToCart =  Mage::getSingleton('core/session')->getData('productInShoppingCart', true);
+			
+			# Did we add to cart?
+			if(!is_null($productAddedToCart) && !empty($productAddedToCart)) {
+			
+				echo "<script>
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'add to basket', [
+				    {name:'Add To Basket.SKU', value:'{$productAddedToCart['sku']}'},
+				    {name:'Add To Basket.Quantity', value:'{$productAddedToCart['quantity']}'},
+				    {name:'Add To Basket.Price', value:'{$productAddedToCart['price']}'},
+				    {name:'Product.Name', value:'{$productAddedToCart['name']}'}
+				], 'Add To Basket']);
+				</script>";
+				
+			}
+		
+		} elseif($intileryTagType == 'RemoveCart') {
+			
+			# Any "add to cart" data
+			$productRemovedFromCart =  Mage::getSingleton('core/session')->getData('productOutShoppingCart', true);
+			
+			# Did we add to cart?
+			if(!is_null($productRemovedFromCart) && !empty($productRemovedFromCart)) {
+			
+				echo "<script>
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'remove from basket', [
+				    {name:'Product.Name',value:'{$productRemovedFromCart['name']}'}
+				], 'Remove From Basket']);
+				</script>";
+			
+			}
+
+		} elseif($intileryTagType == 'UpdateCart') {
+		
+			# Any "update sale item cart" data
+			$productUpdatedInCart =  Mage::getSingleton('core/session')->getData('productUpdateShoppingCart', true);
+			
+			# Did we add to cart?
+			if(!is_null($productUpdatedInCart) && !empty($productUpdatedInCart)) {
+			
+				echo "<script>
+				var _itq = _itq || [];	
+				_itq.push(['_trackUserEvent', 'update basket', [
+				    {name:'Update Basket.Quantity', value:'{$productUpdatedInCart['quantity']}'},
+				    {name:'Update Basket.Price', value:'{$productUpdatedInCart['price']}'},
+				    {name:'Product.Name', value:'{$productUpdatedInCart['name']}'}
+				], 'Update Basket']);
+				</script>";
+				
+			}
+				
+		} elseif($intileryTagType == 'Search') {
+		
+			# Any "update sale item cart" data
+			$searchQueryText =  Mage::getSingleton('core/session')->getData('searchQuery', true);
+			
+			# Did we add to cart?
+			if(!is_null($searchQueryText) && !empty($searchQueryText)) {
+			
+				echo "<script>
+				var _itq = _itq || [];	
+				_itq.push(['_trackUserEvent', 'Search', [{name:'Search.Term',value:'{$searchQueryText}'}]]);
+				</script>";
+				
+			}
+		
+		} elseif($intileryTagType == 'ProductView') {		
+			
+			# Get the product data
+			$productViewData=  Mage::getSingleton('core/session')->getData('productViewData', true);
+			
+			# Did we add to cart?
+			if(!is_null($productViewData) && !empty($productViewData)) {
+		
+				echo "<script>
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'view product', [
+					{name:'Product.Name', value: '{$productViewData['name']}'},
+					{name:'Product.Price', value: '{$productViewData['price']}'},
+					{name:'Product.Description', value: '{$productViewData['description']}'},
+					{name:'Product.Image', value: '{$productViewData['image']}'}
+				]]);
+				</script>";
+				
+			}
+		
+		}
+	
+	}
+
+}
+
+?>

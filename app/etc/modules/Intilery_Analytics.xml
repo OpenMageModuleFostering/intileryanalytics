@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Intilery_Analytics>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Intilery_Analytics>
+    </modules>
+</config>
