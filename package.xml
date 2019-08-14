@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>IntileryAnalytics</name>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <stability>stable</stability>
     <license>Open Software License (OSL)</license>
     <channel>community</channel>
@@ -11,8 +11,8 @@
     <notes>Support for Magento versions 1.9 to 1.9.2</notes>
     <authors><author><name>Gareth</name><user>intilery</user><email>gareth.james@intilery.com</email></author></authors>
     <date>2015-10-16</date>
-    <time>12:22:13</time>
-    <contents><target name="magelocal"><dir name="Intilery"><dir name="Analytics"><dir name="Model"><file name="Observer.php" hash="f4ac9b6c4ace3c761d49dfe555b542b1"/></dir><dir name="etc"><file name="config.xml" hash="3149fd3538d7da8eeadc33acfcb5a09d"/><file name="adminhtml.xml" hash="a6eb6b0d6eaca7f0c086f5dd0ff8d85e"/><file name="system.xml" hash="c33bbe5c89fb09e0ac6665ef63e705b6"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="intilery"><file name="footer.phtml" hash="da29397069e675c74ed07cf10b6c0d5a"/></dir></dir><dir name="layout"><file name="intileryanalytics.xml" hash="6f8d7b5aed8d4fa54ab6f4b9cb2a453d"/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Intilery_Analytics.xml" hash="943756b51b7a8bab8175c9132a7473c8"/></dir></target></contents>
+    <time>12:54:20</time>
+    <contents><target name="magelocal"><dir name="Intilery"><dir name="Analytics"><dir name="Model"><file name="Observer.php" hash="f4ac9b6c4ace3c761d49dfe555b542b1"/></dir><dir name="etc"><file name="config.xml" hash="3149fd3538d7da8eeadc33acfcb5a09d"/><file name="adminhtml.xml" hash="a6eb6b0d6eaca7f0c086f5dd0ff8d85e"/><file name="system.xml" hash="c33bbe5c89fb09e0ac6665ef63e705b6"/></dir><dir name="Helper"><file name="Data.php" hash="7875f3486d0bb7edbccc8ef2d41ee006"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="intilery"><file name="footer.phtml" hash="da29397069e675c74ed07cf10b6c0d5a"/></dir></dir><dir name="layout"><file name="intileryanalytics.xml" hash="6f8d7b5aed8d4fa54ab6f4b9cb2a453d"/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Intilery_Analytics.xml" hash="943756b51b7a8bab8175c9132a7473c8"/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.3.0</min><max>6.0.0</max></php></required></dependencies>
 </package>
