@@ -10,6 +10,25 @@ class Intilery_Analytics_Model_Observer {
 		# Get the product		
 		$product = $observer->getProduct();
 		
+		# Get the categories
+		$categories = array();
+		$categoryCollection = $product->getCategoryIds();
+		
+		# Get all categories
+		foreach($categoryCollection as $categoryID) {
+		
+			# Load category model
+			$_category = Mage::getModel('catalog/category');
+     			$_category->load($categoryID);
+     			
+     			# Get the category name
+			$categories[] = $_category->getName();
+			
+			# Clear up
+			unset($_category);
+			
+		}
+		
 		# Store in the session
 		Mage::getSingleton('core/session')->setData('productViewData', array(
                 		'id' => $product->getId(),
@@ -17,7 +36,9 @@ class Intilery_Analytics_Model_Observer {
                 		'price' => $product->getPrice(),
 				'sku' => $product->getSku(),
 				'image' => $product->getImage(),
-				'description' => $product->getDescription()
+				'description' => $product->getDescription(),
+				'category' => implode(', ', $categories),
+				'categoryIds' => $product->getCategoryIds()
 			)
 		);		
 	

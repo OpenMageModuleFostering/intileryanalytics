@@ -38,8 +38,8 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			_itq.push(['_trackUserEvent','register account',
 		   	[
 		   		{name:'Customer.Email', value:'{$customerRegisterData['email']}'},
-		       		{name:'Customer.First Name', value:'{$customerRegisterData['forename']}'},
-		       		{name:'Customer.Last Name', value:'{$customerRegisterData['surname']}'},
+		       		{name:'Customer.First Name', value:\"{$customerRegisterData['forename']}\"},
+		       		{name:'Customer.Last Name', value:\"{$customerRegisterData['surname']}\"},
 		       		{name:'Customer.Subscribed', value:'{$customerRegisterData['subscribe']}'}
 		       	]]);
 			</script>";
@@ -90,7 +90,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 				    {name:'Add To Basket.SKU', value:'{$productAddedToCart['sku']}'},
 				    {name:'Add To Basket.Quantity', value:'{$productAddedToCart['quantity']}'},
 				    {name:'Add To Basket.Price', value:'{$productAddedToCart['price']}'},
-				    {name:'Product.Name', value:'{$productAddedToCart['name']}'}
+				    {name:'Product.Name', value:\"{$productAddedToCart['name']}\"}
 				], 'Add To Basket']);
 				</script>";
 				
@@ -107,7 +107,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 				echo "<script>
 				var _itq = _itq || [];
 				_itq.push(['_trackUserEvent', 'remove from basket', [
-				    {name:'Product.Name',value:'{$productRemovedFromCart['name']}'}
+				    {name:'Product.Name',value:\"{$productRemovedFromCart['name']}\"}
 				], 'Remove From Basket']);
 				</script>";
 			
@@ -126,7 +126,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 				_itq.push(['_trackUserEvent', 'update basket', [
 				    {name:'Update Basket.Quantity', value:'{$productUpdatedInCart['quantity']}'},
 				    {name:'Update Basket.Price', value:'{$productUpdatedInCart['price']}'},
-				    {name:'Product.Name', value:'{$productUpdatedInCart['name']}'}
+				    {name:'Product.Name', value:\"{$productUpdatedInCart['name']}\"}
 				], 'Update Basket']);
 				</script>";
 				
@@ -142,7 +142,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			
 				echo "<script>
 				var _itq = _itq || [];	
-				_itq.push(['_trackUserEvent', 'Search', [{name:'Search.Term',value:'{$searchQueryText}'}]]);
+				_itq.push(['_trackUserEvent', 'Search', [{name:'Search.Term',value:\"{$searchQueryText}\"}]]);
 				</script>";
 				
 			}
@@ -158,16 +158,52 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 				echo "<script>
 				var _itq = _itq || [];
 				_itq.push(['_trackUserEvent', 'view product', [
-					{name:'Product.Name', value: '{$productViewData['name']}'},
+					{name:'Product.Name', value: \"{$productViewData['name']}\"},
 					{name:'Product.Price', value: '{$productViewData['price']}'},
-					{name:'Product.Description', value: '{$productViewData['description']}'},
-					{name:'Product.Image', value: '{$productViewData['image']}'}
+					{name:'Product.Description', value: \"{$productViewData['description']}\"},
+					{name:'Product.Image', value: '{$productViewData['image']}'},
+					{name:'Product.Category', value: \"{$productViewData['category']}\"}
 				]]);
 				</script>";
 				
 			}
 		
 		}
+	
+	}
+
+}
+
+# Read session
+$checkSessionExists = Mage::getSingleton('core/session')->getData('intilerySessionExists', true);
+
+# Nothing passed over yet
+if(is_null($checkSessionExists) || empty($checkSessionExists)) {
+
+	# Get the user session
+	$session = Mage::getSingleton('customer/session');
+	
+	# Are we logged in?
+	if($session->isLoggedIn()) {
+	
+		# Get customer data
+		$customer = $session->getCustomer();
+		
+		# All the bits we need
+	  	$customerEmail = $customer->getEmail();
+	   	$customerFirstName = $customer->getFirstname();
+	   	$customerLastName = $customer->getLastname();
+
+		echo "<script>
+		_itq.push(['_trackUserEvent', 'identify', [
+			{name:'Customer.Email', value:'{$customerEmail}'}, 
+			{name:'Customer.First Name', value:\"{$customerFirstName}\"}, 
+			{name:'Customer.Last Name', value:\"{$customerLastName}\"}
+		]]);
+		</script>";
+		
+		# Set intilery action
+		Mage::getSingleton('core/session')->setData('intilerySessionExists', '1');
 	
 	}
 
