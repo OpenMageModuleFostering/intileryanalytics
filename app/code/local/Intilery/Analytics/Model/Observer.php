@@ -3,7 +3,7 @@
 class Intilery_Analytics_Model_Observer {
 
 	public function logProductView(Varien_Event_Observer $observer) {
-		
+	
 		# Set intilery action
 		Mage::getSingleton('core/session')->setData('intileryTagType', 'ProductView');
 		
@@ -19,42 +19,28 @@ class Intilery_Analytics_Model_Observer {
 		
 			# Load category model
 			$_category = Mage::getModel('catalog/category');
-			$_category->load($categoryID);
+     			$_category->load($categoryID);
      			
-     		# Get the category name
+     			# Get the category name
 			$categories[] = $_category->getName();
 			
 			# Clear up
 			unset($_category);
 			
 		}
-				
+		
 		# Store in the session
 		Mage::getSingleton('core/session')->setData('productViewData', array(
 				'id' => $product->getId(),
 				'name' => $product->getName(),
-				'price' => $product->getPrice(),
+				'price' => Mage::helper('core')->currency($product->getPrice(), true, false),
 				'sku' => $product->getSku(),
-				'image' => $product->getMediaConfig()->getMediaUrl($product->getData('image')),
+				'image' => $product->getImage(),
 				'description' => $product->getDescription(),
 				'category' => implode(', ', $categories),
-				'categoryIds' => $product->getCategoryIds()
-			)
-		);		
-
-	}
-	
-	public function logCategoryView(Varien_Event_Observer $observer) {
-	
-		# Set intilery action
-		Mage::getSingleton('core/session')->setData('intileryTagType', 'CategoryView');
-		
-		# Get the product		
-		$category = $observer->getCategory();
-				
-		# Store in the session
-		Mage::getSingleton('core/session')->setData('categoryViewData', array(
-				'name' => $category->getName()
+				'categoryIds' => $product->getCategoryIds(),
+				'language' => Mage::app()->getLocale()->getLocaleCode(),
+				'url' => $product->getProductUrl()
 			)
 		);		
 	
@@ -101,8 +87,7 @@ class Intilery_Analytics_Model_Observer {
 		);
 	
 	}
-	
-	
+
 	public function logCustomerRegister(Varien_Event_Observer $observer) {
 		
 		# Set intilery action
@@ -144,30 +129,32 @@ class Intilery_Analytics_Model_Observer {
 	}
 	
 	public function logCartUpdate(Varien_Event_Observer $observer) {
-	
-		# Get product
-		$quoteItem = $observer->getItem();
-    		$quantity = $quoteItem->getQty();
-   		$product = $quoteItem->getProduct();
-		
-		# Valid product?
-		if(!$product->getId()) {
-			return;
+
+		$newQty = $observer->getEvent()->getInfo();
+		$newQty = array_values($newQty);
+
+		$cart = Mage::getModel('checkout/cart')->getQuote();
+		$updateCartArray = array();
+
+		foreach ($cart->getAllItems() as $key=>$item) {
+
+			if($newQty[$key]['qty'] != $item->getQty()){
+
+				$updateCartArray[] = array(
+					'id' => $item->getProduct()->getId(),
+					'quantity' => $newQty[$key]['qty']
+				);
+
+			}
+
 		}
-		
+
 		# Store in the session
-		Mage::getSingleton('core/session')->setData('productUpdateShoppingCart', array(
-               		 	'id' => $product->getId(),
-                		'name' => $product->getName(),
-                		'quantity' => $quantity,
-                		'price' => $product->getPrice(),
-				'sku' => $product->getSku()
-			)
-		);
-		
+		Mage::getSingleton('core/session')->setData('productUpdateShoppingCart', $updateCartArray);
+
 		# Set intilery action
 		Mage::getSingleton('core/session')->setData('intileryTagType', 'UpdateCart');
-		
+
 	}
 	
 	public function logCartAdd(Varien_Event_Observer $observer) { 
@@ -183,16 +170,21 @@ class Intilery_Analytics_Model_Observer {
 		}
 		
 		# Get any categories
-        	$categories = $product->getCategoryIds();
-		
+		$categories = $product->getCategoryIds();
+
+		#GET CURRENCY CODE
+		$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+
 		# Store in the session
 		Mage::getSingleton('core/session')->setData('productInShoppingCart', array(
-                		'id' => $product->getId(),
-                		'quantity' => Mage::app()->getRequest()->getParam('qty', 1),
-                		'name' => $product->getName(),
-                		'price' => $product->getPrice(),
+				'id' => $product->getId(),
+				'quantity' => Mage::app()->getRequest()->getParam('qty', 1),
+				'name' => $product->getName(),
+				'price' => $currency_symbol = Mage::helper('core')->currency($product->getPrice(), true, false),
 				'sku' => $product->getSku(),
+				'language' => Mage::app()->getLocale()->getLocaleCode(),
 				'category_name' => Mage::getModel('catalog/category')->load($categories[0])->getName(),
+				'url' => $product->getProductUrl()
 			)
 		);
 		
@@ -215,8 +207,11 @@ class Intilery_Analytics_Model_Observer {
 		Mage::getSingleton('core/session')->setData('productOutShoppingCart', array(
                 		'id' => $product->getId(),
                 		'name' => $product->getName(),
-                		'price' => $product->getPrice(),
-				'sku' => $product->getSku()
+                		'price' => Mage::helper('core')->currency($product->getPrice(), true, false),
+						'sku' => $product->getSku(),
+						'qty'=> $observer->getQuoteItem()->getQty(),
+						'language'=> Mage::app()->getLocale()->getLocaleCode(),
+						'url' => $product->getProductUrl()
 			)
 		);
 		

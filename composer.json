@@ -1,13 +1,13 @@
 {
     "name": "OpenMageModuleFostering/IntileryAnalytics",
     "type": "magento-module",
-    "license": "GNU-General-Public-License-(GPL)",
+    "license": "Open-Software-License-(OSL)",
     "homepage": "",
-    "description": "Install Intilery analytics on your Magento copy",
+    "description": "Intilery Customer Engagement Connector edited to support Magento versions 1.9 upwards.",
     "authors": [
     {
-        "name": "Lewis Theobald",
-        "email": "lewis@aljtmedia.com"
+        "name": "Gareth",
+        "email": "gareth.james@intilery.com"
     }
 ],
     "suggest": {

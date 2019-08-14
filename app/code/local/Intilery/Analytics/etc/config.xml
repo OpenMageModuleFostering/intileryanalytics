@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Intilery_Analytics>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </Intilery_Analytics>
     </modules>
 	
@@ -12,7 +12,6 @@
                 <class>Intilery_Analytics_Model</class>
             </analytics>
         </models>
-		
 	<helpers>
 	    <analytics>
                 <class>Intilery_Analytics_Helper</class>
@@ -23,47 +22,61 @@
         </helpers>
 		
         <events>
-            <!-- <catalog_product_save_after>
+            <!--<catalog_product_save_after>
                 <observers>
                     <analytics>
                         <class>analytics/observer</class>
-                        <method>logUpdate</method>
+                        <method>logCartUpdate</method>
                         <type>singleton</type>
                     </analytics>
                 </observers>
-            </catalog_product_save_after> -->
-			
-	    <checkout_cart_add_product_complete>
-		<observers>
-		    <analytics_cart_add>
-			<class>analytics/observer</class>
-			<method>logCartAdd</method>
-			<type>singleton</type>
-		    </analytics_cart_add>
-		</observers>
-	    </checkout_cart_add_product_complete>
-	    
-	    <sales_quote_item_qty_set_after>
-	    	<observers>
-		    <analytics_cart_update>
-			<class>analytics/observer</class>
-			<method>logCartUpdate</method>
-			<type>singleton</type>
-		    </analytics_cart_update>
-		</observers>
-	    </sales_quote_item_qty_set_after>
-	    
-	    <!--
-	    <checkout_cart_update_item_complete>
-	    	<observers>
-		    <analytics_cart_update>
-			<class>analytics/observer</class>
-			<method>logCartUpdate</method>
-			<type>singleton</type>
-		    </analytics_cart_update>
-		</observers>
-	    </checkout_cart_update_item_complete>
-	    -->
+            </catalog_product_save_after>-->
+
+			<!--ADD CART ITEM-->
+
+		<checkout_cart_add_product_complete>
+			<observers>
+				<analytics_cart_add>
+					<class>analytics/observer</class>
+					<method>logCartAdd</method>
+					<type>singleton</type>
+				</analytics_cart_add>
+			</observers>
+		</checkout_cart_add_product_complete>
+
+		<checkout_cart_product_add_before>
+			<observers>
+				<analytics_cart_add>
+					<class>analytics/observer</class>
+					<method>logCartAdd</method>
+					<type>singleton</type>
+				</analytics_cart_add>
+			</observers>
+		</checkout_cart_product_add_before>
+
+		<checkout_cart_product_add_after>
+			<observers>
+				<analytics_cart_add>
+					<class>analytics/observer</class>
+					<method>logCartAdd</method>
+					<type>singleton</type>
+				</analytics_cart_add>
+			</observers>
+	    </checkout_cart_product_add_after>
+
+			<!--UPDATE CART ITEM-->
+
+			<checkout_cart_update_items_before>
+				<observers>
+					<analytics_cart_add>
+						<class>analytics/observer</class>
+						<method>logCartUpdate</method>
+						<type>singleton</type>
+					</analytics_cart_add>
+				</observers>
+			</checkout_cart_update_items_before>
+
+			<!--REMOVE CART ITEM-->
 	    
 	    <sales_quote_remove_item>
 	    	<observers>
@@ -74,6 +87,8 @@
 		    </analytics_cart_remove>
 		</observers>
 	    </sales_quote_remove_item>
+
+			<!--LOGOUT-->
 	    
 	    <customer_logout>
 	    	<observers>
@@ -84,6 +99,8 @@
 	    	    </analytics_logout>
 	    	</observers>
 	    </customer_logout>
+
+			<!--LOGIN-->
 	    
 	    <customer_login>
 	    	<observers>
@@ -94,7 +111,9 @@
 	    	    </analytics_login>
 	    	</observers>
 	    </customer_login>
-	    
+
+			<!--REGISTER ACCOUNT-->
+
 	    <customer_register_success>
 	    	<observers>
 	    	    <analytics_register>
@@ -105,7 +124,7 @@
 	    	</observers>
 	    </customer_register_success>
 	    
-		<catalogsearch_query_load_after>
+	    <catalogsearch_query_load_after>
 	    	<observers>
 	    	    <analytics_search>
 	    		<class>analytics/observer</class>
@@ -114,16 +133,8 @@
 	    	    </analytics_search>
 	    	</observers>
 	    </catalogsearch_query_load_after>
-		
-	    <catalog_controller_category_init_after>
-	    	<observers>
-	    	    <analytics_search>
-	    		<class>analytics/observer</class>
-	    		<method>logCategoryView</method>
-	    		<type>singleton</type>	
-	    	    </analytics_search>
-	    	</observers>
-	    </catalog_controller_category_init_after>
+
+			<!--VIEW PRODUCT-->
 	    
 	    <catalog_controller_product_view>
 	    	<observers>
@@ -134,6 +145,7 @@
 	    	    </analytics_product>
 	    	</observers>
 	    </catalog_controller_product_view>
+
         </events>
     </global>
 	
