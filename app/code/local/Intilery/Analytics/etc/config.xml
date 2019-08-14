@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Intilery_Analytics>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </Intilery_Analytics>
     </modules>
 	
@@ -22,16 +22,6 @@
         </helpers>
 		
         <events>
-            <!--<catalog_product_save_after>
-                <observers>
-                    <analytics>
-                        <class>analytics/observer</class>
-                        <method>logCartUpdate</method>
-                        <type>singleton</type>
-                    </analytics>
-                </observers>
-            </catalog_product_save_after>-->
-
 			<!--ADD CART ITEM-->
 
 		<checkout_cart_add_product_complete>
@@ -87,6 +77,30 @@
 		    </analytics_cart_remove>
 		</observers>
 	    </sales_quote_remove_item>
+
+			<!--CART SAVE-->
+
+			<checkout_cart_save_before>
+				<observers>
+					<analytics_cart_add>
+						<class>analytics/observer</class>
+						<method>logCartSave</method>
+						<type>singleton</type>
+					</analytics_cart_add>
+				</observers>
+			</checkout_cart_save_before>
+
+			<!--PURCHASED ITEM-->
+
+			<sales_order_place_after>
+				<observers>
+					<analytics_save_order>
+						<class>analytics/observer</class>
+						<method>logOrderPlacedAfter</method>
+						<type>singleton</type>
+					</analytics_save_order>
+				</observers>
+			</sales_order_place_after>
 
 			<!--LOGOUT-->
 	    

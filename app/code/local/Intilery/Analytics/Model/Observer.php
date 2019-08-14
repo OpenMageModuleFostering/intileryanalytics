@@ -19,9 +19,9 @@ class Intilery_Analytics_Model_Observer {
 		
 			# Load category model
 			$_category = Mage::getModel('catalog/category');
-     			$_category->load($categoryID);
+			$_category->load($categoryID);
      			
-     			# Get the category name
+			# Get the category name
 			$categories[] = $_category->getName();
 			
 			# Clear up
@@ -34,13 +34,16 @@ class Intilery_Analytics_Model_Observer {
 				'id' => $product->getId(),
 				'name' => $product->getName(),
 				'price' => Mage::helper('core')->currency($product->getPrice(), true, false),
+				'rrpPrice' => Mage::helper('core')->currency($product->getMsrp(), true, false),
 				'sku' => $product->getSku(),
-				'image' => $product->getImage(),
+				'image' => Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getImage()),
 				'description' => $product->getDescription(),
 				'category' => implode(', ', $categories),
-				'categoryIds' => $product->getCategoryIds(),
+				'categoryIds' => implode(', ', $product->getCategoryIds()),
 				'language' => Mage::app()->getLocale()->getLocaleCode(),
-				'url' => $product->getProductUrl()
+				'url' => $product->getProductUrl(),
+				'brandName' => $product->getAttributeText('manufacturer'),
+				'brandID' => $product->getManufacturer()
 			)
 		);		
 	
@@ -142,11 +145,11 @@ class Intilery_Analytics_Model_Observer {
 
 				$updateCartArray[] = array(
 					'id' => $item->getProduct()->getId(),
-					'quantity' => $newQty[$key]['qty']
+					'quantity' => $newQty[$key]['qty'],
+					'price' => Mage::helper('core')->currency($item->getPrice(), true, false)
 				);
 
 			}
-
 		}
 
 		# Store in the session
@@ -180,7 +183,7 @@ class Intilery_Analytics_Model_Observer {
 				'id' => $product->getId(),
 				'quantity' => Mage::app()->getRequest()->getParam('qty', 1),
 				'name' => $product->getName(),
-				'price' => $currency_symbol = Mage::helper('core')->currency($product->getPrice(), true, false),
+				'price' => Mage::helper('core')->currency($product->getPrice(), true, false),
 				'sku' => $product->getSku(),
 				'language' => Mage::app()->getLocale()->getLocaleCode(),
 				'category_name' => Mage::getModel('catalog/category')->load($categories[0])->getName(),
@@ -219,7 +222,87 @@ class Intilery_Analytics_Model_Observer {
 		Mage::getSingleton('core/session')->setData('intileryTagType', 'RemoveCart');
 		
 	}
-	
+
+	public function logCartSave(Varien_Event_Observer $observer){
+
+		//USE THIS FUNCTION TO CHECK IF CART HAS BEEN EMPTIED
+
+		$cart = Mage::getModel('checkout/cart')->getQuote();
+		$updateCartArray = array();
+
+		if(sizeof($cart->getAllItems()) < 1){
+			//CART EMPTIED
+			# Set intilery action
+			Mage::getSingleton('core/session')->setData('intileryTagType', 'EmptiedCart');
+
+		}
+	}
+
+	public function logOrderPlacedAfter(Varien_Event_Observer $observer){
+
+		$orderObj = $observer->getEvent()->getData('order');
+		$orderNum = $orderObj->getId();
+
+		//GET ITEMS WITHIN ORDER
+		$order = $observer->getEvent()->getOrder();
+
+		//GET STATE
+		$regionModel = Mage::getSingleton('directory/region')->load($orderObj->getShippingAddress()->getRegionId());
+		$sstate_code = $regionModel->getCode();
+
+		if($order->getId()){
+			$ProdustIds = array();
+
+			foreach ($order->getAllVisibleItems() as $key=>$item)
+			{
+
+				$product = $item->getProduct();
+
+				# Get the categories
+				$categories = array();
+				$categoryCollection = $product->getCategoryIds();
+
+				# Get all categories
+				foreach($categoryCollection as $categoryID) {
+
+					# Load category model
+					$_category = Mage::getModel('catalog/category')->load($categoryID);
+
+					# Get the category name
+					$categories[] = $_category->getName();
+
+					# Clear up
+					unset($_category);
+				}
+
+				$ProdustIds[$key]['ID'] = $item->getProductID();
+				$ProdustIds[$key]['name'] = $item->getName();
+				$ProdustIds[$key]['sku'] = $item->getSku();
+				$ProdustIds[$key]['qty'] = $item->getQtyOrdered();
+				$ProdustIds[$key]['price'] = $item->getPrice();
+				$ProdustIds[$key]['cat'] = implode(", ", $categories);
+			}
+		}
+
+		//Set intilery action
+		Mage::getSingleton('core/session')->setData('intileryTagType', 'orderAfter');
+
+		# Store in the session
+		Mage::getSingleton('core/session')->setData('orderAfterData', array(
+				'orderNum' => $orderNum,
+				'storeName' => Mage::app()->getStore()->getName(),
+				'grandTotal' => $orderObj->getBaseGrandTotal(),
+				'shippingCity' => $orderObj->getShippingAddress()->getCity(),
+				'state' => $orderObj->getShippingAddress()->getRegion(),
+				'country' => $orderObj->getShippingAddress()->getCountryId(),
+				'currentCurrency' => Mage::app()->getStore()->getBaseCurrencyCode(),
+				'items' => $ProdustIds,
+				'tax' => $orderObj->getData('tax_amount'),
+				'shipping' => $orderObj->getData('shipping_amount')
+			)
+		);
+	}
+
 }
 
 ?>
