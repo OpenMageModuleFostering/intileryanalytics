@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>IntileryAnalytics</name>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <stability>stable</stability>
     <license>GNU General Public License (GPL)</license>
     <channel>community</channel>
@@ -10,9 +10,9 @@
     <description>Allows the user to connect their Magento installation with their Intilery tracking dashboard.</description>
     <notes>First preview release</notes>
     <authors><author><name>Lewis Theobald</name><user>LewisTheobald</user><email>lewis@aljtmedia.com</email></author></authors>
-    <date>2014-02-16</date>
-    <time>20:38:36</time>
-    <contents><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="intilery"><file name="footer.phtml" hash="6317b32f4afa644002b4bcf7abaddc96"/></dir></dir><dir name="layout"><file name="intileryanalytics.xml" hash="029805cde7e0a232ae1c34ca9c9294dc"/></dir></dir></dir></dir></target><target name="magelocal"><dir name="Intilery"><dir name="Analytics"><dir name="Helper"><file name="Data.php" hash="73eea83351ad9a89cdf5f5ad14054a81"/></dir><dir name="Model"><file name="Observer.php" hash="71fd96d35303e83a9940a25a1e83d50b"/></dir><dir name="etc"><file name="adminhtml.xml" hash="02d8db0ec3a9f95fb0f0a8b80c56764a"/><file name="config.xml" hash="2e694f64f95ce0e87843aeafca8abb8e"/><file name="system.xml" hash="073880c6cbfc851b4c7f32c5a60c03cc"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Intilery_Analytics.xml" hash="943756b51b7a8bab8175c9132a7473c8"/></dir></target></contents>
+    <date>2014-02-27</date>
+    <time>17:05:15</time>
+    <contents><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="intilery"><file name="footer.phtml" hash="56156ecc00b3a43e2da8f416d40e36ca"/></dir></dir><dir name="layout"><file name="intileryanalytics.xml" hash="6f8d7b5aed8d4fa54ab6f4b9cb2a453d"/></dir></dir></dir></dir></target><target name="magelocal"><dir name="Intilery"><dir name="Analytics"><dir name="Helper"><file name="Data.php" hash="7875f3486d0bb7edbccc8ef2d41ee006"/></dir><dir name="Model"><file name="Observer.php" hash="fb9cb912eeaa9dca3c243eca7728e835"/></dir><dir name="etc"><file name="adminhtml.xml" hash="a6eb6b0d6eaca7f0c086f5dd0ff8d85e"/><file name="config.xml" hash="c4cb5f38b309ae1cc54692ca5944e603"/><file name="system.xml" hash="c33bbe5c89fb09e0ac6665ef63e705b6"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Intilery_Analytics.xml" hash="943756b51b7a8bab8175c9132a7473c8"/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.3.0</min><max>6.0.0</max></php></required></dependencies>
 </package>

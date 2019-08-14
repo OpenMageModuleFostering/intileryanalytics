@@ -3,7 +3,7 @@
 class Intilery_Analytics_Model_Observer {
 
 	public function logProductView(Varien_Event_Observer $observer) {
-	
+		
 		# Set intilery action
 		Mage::getSingleton('core/session')->setData('intileryTagType', 'ProductView');
 		
@@ -19,26 +19,42 @@ class Intilery_Analytics_Model_Observer {
 		
 			# Load category model
 			$_category = Mage::getModel('catalog/category');
-     			$_category->load($categoryID);
+			$_category->load($categoryID);
      			
-     			# Get the category name
+     		# Get the category name
 			$categories[] = $_category->getName();
 			
 			# Clear up
 			unset($_category);
 			
 		}
-		
+				
 		# Store in the session
 		Mage::getSingleton('core/session')->setData('productViewData', array(
-                		'id' => $product->getId(),
-                		'name' => $product->getName(),
-                		'price' => $product->getPrice(),
+				'id' => $product->getId(),
+				'name' => $product->getName(),
+				'price' => $product->getPrice(),
 				'sku' => $product->getSku(),
-				'image' => $product->getImage(),
+				'image' => $product->getMediaConfig()->getMediaUrl($product->getData('image')),
 				'description' => $product->getDescription(),
 				'category' => implode(', ', $categories),
 				'categoryIds' => $product->getCategoryIds()
+			)
+		);		
+
+	}
+	
+	public function logCategoryView(Varien_Event_Observer $observer) {
+	
+		# Set intilery action
+		Mage::getSingleton('core/session')->setData('intileryTagType', 'CategoryView');
+		
+		# Get the product		
+		$category = $observer->getCategory();
+				
+		# Store in the session
+		Mage::getSingleton('core/session')->setData('categoryViewData', array(
+				'name' => $category->getName()
 			)
 		);		
 	

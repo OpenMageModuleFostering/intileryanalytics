@@ -34,7 +34,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 		if(!is_null($customerRegisterData) && !empty($customerRegisterData)) {
 		
 			echo "<script>
-			var _itq = _itq || [];
+			var _itq = _itq || [];
 			_itq.push(['_trackUserEvent','register account',
 		   	[
 		   		{name:'Customer.Email', value:'{$customerRegisterData['email']}'},
@@ -61,7 +61,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($customerLoginData) && !empty($customerLoginData)) {
 			
 				echo "<script>
-				var _itq = _itq || [];
+				var _itq = _itq || [];
 				_itq.push(['_trackUserEvent', 'sign in', [{name:'Customer.Email', value:'{$customerLoginData['email']}'}]]);
 				</script>";
 			
@@ -71,7 +71,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 		} elseif($intileryTagType == 'CustomerLogout') {
 		
 			echo "<script>
-			var _itq = _itq || [];
+			var _itq = _itq || [];
 			_itq.push(['_trackUserEvent', 'sign out', []]);
 			</script>";
 		
@@ -85,13 +85,13 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($productAddedToCart) && !empty($productAddedToCart)) {
 			
 				echo "<script>
-				var _itq = _itq || [];
-				_itq.push(['_trackUserEvent', 'add to basket', [
-				    {name:'Add To Basket.SKU', value:'{$productAddedToCart['sku']}'},
-				    {name:'Add To Basket.Quantity', value:'{$productAddedToCart['quantity']}'},
-				    {name:'Add To Basket.Price', value:'{$productAddedToCart['price']}'},
-				    {name:'Product.Name', value:\"{$productAddedToCart['name']}\"}
-				], 'Add To Basket']);
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'add to basket', [
+				    {name:'Add To Basket.SKU', value:'{$productAddedToCart['sku']}'},
+				    {name:'Add To Basket.Quantity', value:'{$productAddedToCart['quantity']}'},
+				    {name:'Add To Basket.Price', value:'{$productAddedToCart['price']}'},
+				    {name:'Product.Name', value:\"{$productAddedToCart['name']}\"}
+				], 'Add To Basket']);
 				</script>";
 				
 			}
@@ -105,10 +105,10 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($productRemovedFromCart) && !empty($productRemovedFromCart)) {
 			
 				echo "<script>
-				var _itq = _itq || [];
-				_itq.push(['_trackUserEvent', 'remove from basket', [
-				    {name:'Product.Name',value:\"{$productRemovedFromCart['name']}\"}
-				], 'Remove From Basket']);
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'remove from basket', [
+				    {name:'Product.Name',value:\"{$productRemovedFromCart['name']}\"}
+				], 'Remove From Basket']);
 				</script>";
 			
 			}
@@ -122,12 +122,12 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($productUpdatedInCart) && !empty($productUpdatedInCart)) {
 			
 				echo "<script>
-				var _itq = _itq || [];	
-				_itq.push(['_trackUserEvent', 'update basket', [
-				    {name:'Update Basket.Quantity', value:'{$productUpdatedInCart['quantity']}'},
-				    {name:'Update Basket.Price', value:'{$productUpdatedInCart['price']}'},
-				    {name:'Product.Name', value:\"{$productUpdatedInCart['name']}\"}
-				], 'Update Basket']);
+				var _itq = _itq || [];	
+				_itq.push(['_trackUserEvent', 'update basket', [
+				    {name:'Update Basket.Quantity', value:'{$productUpdatedInCart['quantity']}'},
+				    {name:'Update Basket.Price', value:'{$productUpdatedInCart['price']}'},
+				    {name:'Product.Name', value:\"{$productUpdatedInCart['name']}\"}
+				], 'Update Basket']);
 				</script>";
 				
 			}
@@ -141,7 +141,7 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($searchQueryText) && !empty($searchQueryText)) {
 			
 				echo "<script>
-				var _itq = _itq || [];	
+				var _itq = _itq || [];	
 				_itq.push(['_trackUserEvent', 'Search', [{name:'Search.Term',value:\"{$searchQueryText}\"}]]);
 				</script>";
 				
@@ -156,18 +156,35 @@ _itq.push(["_setAccount", "'.$intileryConfig['code'].'"]);
 			if(!is_null($productViewData) && !empty($productViewData)) {
 		
 				echo "<script>
-				var _itq = _itq || [];
+				var _itq = _itq || [];
 				_itq.push(['_trackUserEvent', 'view product', [
 					{name:'Product.Name', value: \"{$productViewData['name']}\"},
 					{name:'Product.Price', value: '{$productViewData['price']}'},
 					{name:'Product.Description', value: \"{$productViewData['description']}\"},
 					{name:'Product.Image', value: '{$productViewData['image']}'},
 					{name:'Product.Category', value: \"{$productViewData['category']}\"}
-				]]);
+				], 'View Product']);
 				</script>";
 				
 			}
 		
+		} elseif($intileryTagType == 'CategoryView') {
+		
+			# Get the product data
+			$categoryViewData=  Mage::getSingleton('core/session')->getData('categoryViewData', true);
+			
+			# Did we add to cart?
+			if(!is_null($categoryViewData) && !empty($categoryViewData)) {
+		
+				echo "<script>
+				var _itq = _itq || [];
+				_itq.push(['_trackUserEvent', 'view category', [
+					{name:'Category.Name', value: \"{$categoryViewData['name']}\"}
+				], 'View Category']);
+				</script>";
+				
+			}
+			
 		}
 	
 	}

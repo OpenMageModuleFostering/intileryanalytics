@@ -105,7 +105,7 @@
 	    	</observers>
 	    </customer_register_success>
 	    
-	    <catalogsearch_query_load_after>
+		<catalogsearch_query_load_after>
 	    	<observers>
 	    	    <analytics_search>
 	    		<class>analytics/observer</class>
@@ -114,6 +114,16 @@
 	    	    </analytics_search>
 	    	</observers>
 	    </catalogsearch_query_load_after>
+		
+	    <catalog_controller_category_init_after>
+	    	<observers>
+	    	    <analytics_search>
+	    		<class>analytics/observer</class>
+	    		<method>logCategoryView</method>
+	    		<type>singleton</type>	
+	    	    </analytics_search>
+	    	</observers>
+	    </catalog_controller_category_init_after>
 	    
 	    <catalog_controller_product_view>
 	    	<observers>
