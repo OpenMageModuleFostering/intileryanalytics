@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/IntileryAnalytics",
+    "name": "openmage-module-fostering\/intileryanalytics",
     "type": "magento-module",
-    "license": "Open-Software-License-(OSL)",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Intilery Customer Engagement Connector edited to support Magento versions 1.9 upwards.",
     "authors": [
