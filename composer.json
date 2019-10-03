@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/IntileryAnalytics",
+    "name": "OpenMageModuleFostering\/IntileryAnalytics",
     "type": "magento-module",
     "license": "Open-Software-License-(OSL)",
     "homepage": "",
     "description": "Intilery Customer Engagement Connector edited to support Magento versions 1.9 upwards.",
     "authors": [
-    {
-        "name": "Gareth",
-        "email": "gareth.james@intilery.com"
-    }
-],
+        {
+            "name": "Gareth",
+            "email": "gareth.james@intilery.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
